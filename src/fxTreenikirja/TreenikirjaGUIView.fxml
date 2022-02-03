@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fi.jyu.mit.fxgui.ListChooser?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <HBox spacing="10.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <children>
+            <Button mnemonicParsing="false" text="Uusi treeni" />
+            <Button mnemonicParsing="false" text="Tallenna" />
+         </children>
+      </HBox>
+   </bottom>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Tiedosto">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Muokkaa">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Apua">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <BorderPane maxHeight="-Infinity" prefHeight="226.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <ListChooser maxWidth="-Infinity" minHeight="-Infinity" prefHeight="164.0" prefWidth="85.0" rivit="16.01.2022&#10;15.01.2022&#10;13.01.2022&#10;12.01.2022&#10;09.01.2022&#10;07.01.2022&#10;06.01.2022" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="20.0" right="20.0" top="5.0" />
+               </BorderPane.margin></ListChooser>
+         </center>
+         <top>
+            <BorderPane prefHeight="130.0" prefWidth="204.0" BorderPane.alignment="CENTER">
+               <bottom>
+                  <Label alignment="BOTTOM_CENTER" text="Päivämäärä" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Label>
+               </bottom>
+               <center>
+                  <TitledPane animated="false" maxWidth="-Infinity" prefHeight="51.0" prefWidth="88.0" text="PVM." BorderPane.alignment="CENTER">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="26.0" prefWidth="86.0" />
+                    </content>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" />
+                     </BorderPane.margin>
+                  </TitledPane>
+               </center>
+               <top>
+                  <Label alignment="BOTTOM_CENTER" text="Haku" BorderPane.alignment="BOTTOM_CENTER">
+                     <BorderPane.margin>
+                        <Insets top="35.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
+            </BorderPane>
+         </top>
+      </BorderPane>
+   </left>
+   <center>
+      <SplitPane dividerPositions="0.13719512195121952" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="14.0" layoutY="4.0" text="Treenin tiedot - 16.01.2022" textAlignment="CENTER">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="398.0">
+               <children>
+                  <GridPane layoutX="99.0" layoutY="30.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Tyyppi">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="Kesto" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="Kalorit" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="Matka" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="treeninTyyppi" prefWidth="150.0" GridPane.columnIndex="1" />
+                        <TextField text="0h 20min" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </TextField>
+                        <TextField text="140" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </TextField>
+                        <TextField text="3km" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>
