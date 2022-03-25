@@ -2,8 +2,11 @@ package fxTreenikirja;
 
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ListChooser;
+import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import treenikirja.Paivamaara;
+import treenikirja.treenikirja;
+import treenikirja.SailoException;
+
 
 /**
  * @author Oskari
@@ -23,23 +33,31 @@ import javafx.stage.Stage;
  *
  */
 public class TreenikirjaGUIController {
-
+		
 	private Stage stage;
 	private Scene scene;
 	
+	treenikirja treenikirja = new treenikirja();
 	
+	
+    @FXML
+    private ListChooser<Paivamaara> paivamaaraLista;
+    
     @FXML
     private ComboBox<String> hakuehto;
 
     @FXML
     private Button tallennaButton;
-
+    
     @FXML
-    private ComboBox<String> treeninTyyppi;
-
+    private ScrollPane treeniTaulukko;
+    
+    
     @FXML
-    private Button uusiTreeniButton;
-
+    void uusiTreeniButton(ActionEvent event) {
+    	uusiTreeni();
+    }
+    
     @FXML
     void handleApua(ActionEvent event) {
     	Dialogs.showMessageDialog("Vielä ei tarvita apua");
@@ -67,11 +85,10 @@ public class TreenikirjaGUIController {
 
     @FXML
     void handleUusiTreeni(ActionEvent event) {
-    	Dialogs.showMessageDialog("Vielä ei osata lisätä treeniä");
+    	uusiTreeni();
     }
 
-    
-    /**
+	/**
      * Scenen vaihtaminen käyttäjän kysymissivulle.
      */
     public void vaihdaKayttaja(ActionEvent event) throws IOException {
@@ -88,9 +105,70 @@ public class TreenikirjaGUIController {
      * treenityyppien ja hakuehtojen lisääminen comboBoxiin.
      */
     public void initialize() {
-    	ObservableList<String> treenit = FXCollections.observableArrayList("Lenkki", "Sali", "Fitness", "Pyöräily", "Pallopelit", "Jooga", "Talviurheilu", "Vesiurheilu");
     	ObservableList<String> hakuehdot = FXCollections.observableArrayList("Päivämäärä", "Treenin tyyppi");
-    	treeninTyyppi.setItems(treenit);
     	hakuehto.setItems(hakuehdot);
+    	
+    	treeniTaulukko.setContent(areaJasen);
+        areaJasen.setFont(new Font("Courier New", 12));
+        treeniTaulukko.setFitToHeight(true);
+
+    	
+    	paivamaaraLista.clear();
+    	paivamaaraLista.addSelectionListener(e -> naytaJasen());
         }
+
+
+///-----------------------------------------
+
+    
+    private Paivamaara paivamaaranKohdalla;
+    private TextArea areaJasen = new TextArea();
+    
+        
+	private void uusiTreeni() {
+    	Paivamaara uusi = new Paivamaara();
+    	uusi.luoTreeni();
+    	try {
+			treenikirja.lisaa(uusi);
+		} catch (SailoException e) {
+			e.printStackTrace();
+			return;
+		}
+    	lisaa(uusi.getPaivamaaranNro());
+	}
+        
+
+	private void lisaa(int paivamaaranNro) {
+		
+		paivamaaraLista.clear();
+		
+		int index = 0;
+		for (int i=0; i < treenikirja.getPaivamaarat(); i++) {
+			Paivamaara paivamaara = treenikirja.annaPaivamaara(i);
+			if (paivamaara.getPaivamaaranNro() == paivamaaranNro) index = i;
+			paivamaaraLista.add(paivamaara.getPaivamaara(), paivamaara);
+		}
+		paivamaaraLista.setSelectedIndex(index);
+	}
+
+	
+    protected void naytaJasen() {
+    	paivamaaranKohdalla = paivamaaraLista.getSelectedObject();
+
+        areaJasen.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaJasen)) {
+            tulosta(os,paivamaaranKohdalla);  
+        }
+    }
+
+	
+	public void tulosta(PrintStream os, Paivamaara paiva) {
+		paiva.tulosta(os);
+	}
+	
+
+	public void setTreenikirja(treenikirja treenikirja) {
+		this.treenikirja = treenikirja;
+	}
+	
 }

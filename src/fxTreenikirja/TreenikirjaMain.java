@@ -1,7 +1,9 @@
 package fxTreenikirja;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import treenikirja.treenikirja;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
@@ -18,16 +20,25 @@ public class TreenikirjaMain extends Application {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("TreenikirjaGUIView.fxml"));
             final Pane root = ldr.load();
-            //final TreenikirjaGUIController treenikirjaCtrl = (TreenikirjaGUIController) ldr.getController();
+            final TreenikirjaGUIController treenikirjaCtrl = (TreenikirjaGUIController)ldr.getController();
+            
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("treenikirja.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Treenikirja");
+
+            treenikirja treenikirja = new treenikirja();  
+            treenikirjaCtrl.setTreenikirja(treenikirja);
+
+            
             primaryStage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
+            
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        	}
+    	}
+    
+
 
     /**
      * @param args Ei käytössä

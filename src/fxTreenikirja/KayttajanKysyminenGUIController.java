@@ -2,6 +2,7 @@ package fxTreenikirja;
 
 import java.io.IOException;
 
+import fi.jyu.mit.fxgui.ModalController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,6 +65,12 @@ public class KayttajanKysyminenGUIController {
     	ObservableList<String> kayttaja = FXCollections.observableArrayList("Oskari", "Kari", "Ari");
         valitseKayttaja.setItems(kayttaja);
         }
+
+	public static String kysyNimi(Stage modalitySatge, String oletus) {
+		return ModalController.showModal(
+				KayttajanKysyminenGUIController.class.getResource("KerhonNimiView.fxml"),
+				"Treenikirja", modalitySatge, oletus);
+	}
     
     
     
