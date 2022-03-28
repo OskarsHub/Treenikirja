@@ -29,8 +29,8 @@ import treenikirja.SailoException;
 
 /**
  * @author Oskari
- * @version 25.1.2022
- *
+ * @version 25.3.2022
+ * @version 28.3.2022 - Bugikorjauksia
  */
 public class TreenikirjaGUIController {
 		
@@ -88,6 +88,10 @@ public class TreenikirjaGUIController {
     	uusiTreeni();
     }
 
+    
+    ///-----------------------------------------
+    
+    
 	/**
      * Scenen vaihtaminen k‰ytt‰j‰n kysymissivulle.
      */
@@ -101,8 +105,9 @@ public class TreenikirjaGUIController {
 		Dialogs.showMessageDialog("Tietoja ei tallennettu");
     }
 
+    
     /**
-     * treenityyppien ja hakuehtojen lis‰‰minen comboBoxiin.
+     * treenityyppien ja hakuehtojen lis‰‰minen comboBoxiin, sek‰ paivamaaraListaan kuuntelija
      */
     public void initialize() {
     	ObservableList<String> hakuehdot = FXCollections.observableArrayList("P‰iv‰m‰‰r‰", "Treenin tyyppi");
@@ -111,20 +116,24 @@ public class TreenikirjaGUIController {
     	treeniTaulukko.setContent(areaJasen);
         areaJasen.setFont(new Font("Courier New", 12));
         treeniTaulukko.setFitToHeight(true);
-
-    	
+        
     	paivamaaraLista.clear();
     	paivamaaraLista.addSelectionListener(e -> naytaJasen());
         }
 
-
-///-----------------------------------------
-
-    
+    /*
+     * Valitun p‰iv‰m‰‰r‰n n‰ytt‰mist‰ varten
+     */  
     private Paivamaara paivamaaranKohdalla;
+    
+    /*
+     * alue johon valittu p‰iv‰m‰‰r‰ kirjoitetaan
+     */
     private TextArea areaJasen = new TextArea();
     
-        
+    /*
+     * Luodaan uusi treeni ja arvotaan sille tyyppi
+     */
 	private void uusiTreeni() {
     	Paivamaara uusi = new Paivamaara();
     	uusi.luoTreeni();
@@ -137,7 +146,9 @@ public class TreenikirjaGUIController {
     	lisaa(uusi.getPaivamaaranNro());
 	}
         
-
+	/*
+	 * Lis‰t‰‰n luotu treeni p‰iv‰m‰‰r‰listaan
+	 */
 	private void lisaa(int paivamaaranNro) {
 		
 		paivamaaraLista.clear();
@@ -151,7 +162,9 @@ public class TreenikirjaGUIController {
 		paivamaaraLista.setSelectedIndex(index);
 	}
 
-	
+	/*
+	 * Valitun p‰iv‰m‰‰r‰n tiedot
+	 */
     protected void naytaJasen() {
     	paivamaaranKohdalla = paivamaaraLista.getSelectedObject();
 
@@ -161,12 +174,16 @@ public class TreenikirjaGUIController {
         }
     }
 
-	
+	/*
+	 * Tulostaa valitun p‰iv‰m‰‰r‰n tiedot ruudulle
+	 */
 	public void tulosta(PrintStream os, Paivamaara paiva) {
 		paiva.tulosta(os);
 	}
 	
-
+	/*
+	 * Valittu treenikirja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+	 */
 	public void setTreenikirja(treenikirja treenikirja) {
 		this.treenikirja = treenikirja;
 	}

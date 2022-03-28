@@ -2,12 +2,25 @@ package treenikirja;
 
 import java.util.Arrays;
 
+
+/**
+ * Treenikirjan päivämäärät
+ *
+ * @author Oskari Kainulainen
+ * @version 25.03.2022
+ * @version 28.03.2022 - bugikorjailua
+ */
+
 public class Paivamaarat {
+	
 	
 	public Paivamaara alkiot[] = new Paivamaara[10];
 	private static int lkm = 0;
 	
 	
+	/*
+	 * Lisää uuden päivämäärän tietorakenteeseen
+	 */
     public void lisaa(Paivamaara treeni) throws SailoException {
         if (lkm >= alkiot.length) {
         	alkiot = Arrays.copyOf(alkiot, alkiot.length+10);
@@ -16,18 +29,26 @@ public class Paivamaarat {
     }
     
     
-    public Paivamaara anna(int i) throws IndexOutOfBoundsException {
-        if (i < 0 || lkm <= i)
-            throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
+    /*
+     * Palauttaa viitteen i:teen päivämäärään
+     */
+    public Paivamaara anna(int i) {
         return alkiot[i];
     }
     
     
+    /*
+     * Palauttaa kuinka monta päivämäärää on
+     */
     public int getLkm() {
         return lkm;
     }
 
     
+    /**
+     * Testiohjelma jäsenistölle
+     * @param args ei käytössä
+     */
     public static void main(String args[]) {
     	Paivamaarat paivamaarat = new Paivamaarat();
     	
@@ -59,6 +80,7 @@ public class Paivamaarat {
 		
  	
     }
+    
     
 }
 

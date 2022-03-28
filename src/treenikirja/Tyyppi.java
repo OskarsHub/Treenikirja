@@ -4,26 +4,32 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Random;
 
+
+/**
+ * Treenikirjan treenien osa jolla voidaan alustaa jokainen treeni
+ *
+ * @author Oskari Kainulainen
+ * @version 25.03.2022
+ * @version 28.03.2022 - bugikorjailua
+ */
 public class Tyyppi {
-	protected static int id;
-	protected static String tyyppi;
-	public static boolean kesto;
-	public static boolean kalorit;
-	public static boolean matka;
-	public static boolean askeleet;
-	public static boolean syke;
 	
-	public static String[] tyypit = {"Lenkki","Sali","Fitness","Pyöräily","Pallopelit",
-            "Jooga", "Talviurheilu", "Vesiurheilu"};
+	protected int id;
+	protected String tyyppi;
+	public boolean kesto;
+	public boolean kalorit;
+	public boolean matka;
+	public boolean askeleet;
+	public boolean syke;
 	
-    public void luoTyyppi(int tyyppiId) {
-
-
-		String aputyyppi = tyypit[id];
-    	
+	
+	/*
+	 * Alustetaan jokaiselle treenityypille mitä tietoja halutaan kerätä
+	 */
+    public void alusta(int tyyppiId) {
 		
         if (tyyppiId == 0) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Lenkki";
             kesto      = true;
             kalorit    = true;
             matka      = true;
@@ -32,7 +38,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 1) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Sali";
             kesto      = false;
             kalorit    = true;
             matka      = false;
@@ -41,7 +47,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 2) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Fitness";
             kesto      = false;
             kalorit    = true;
             matka      = false;
@@ -50,7 +56,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 3) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Pyöräily";
             kesto      = true;
             kalorit    = true;
             matka      = true;
@@ -59,7 +65,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 4) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Pallopelit";
             kesto      = true;
             kalorit    = true;
             matka      = false;
@@ -68,7 +74,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 5) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Jooga";
             kesto      = true;
             kalorit    = false;
             matka      = false;
@@ -77,7 +83,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 6) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Talviurheilu";
             kesto      = true;
             kalorit    = true;
             matka      = false;
@@ -86,7 +92,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 7) {
-        	tyyppi     = aputyyppi;
+        	tyyppi     = "Vesiurheilu";
             kesto      = true;
             kalorit    = true;
             matka      = true;
@@ -94,16 +100,22 @@ public class Tyyppi {
             syke       = true;
         }
     }
-
     
-	public void luoTyyppi() {
+
+    /*
+     * apumetodi, jolla saadaan luotua testiarvot
+     */
+	public void alusta() {
 		Random random = new Random();
 		id = random.nextInt(8);
 		
-		luoTyyppi(id);
+		alusta(id);
 	}
     
-
+	
+	/*
+	 * Tulostaa true/false halutaanko kerätä tietoa
+	 */
 	public void tulosta(PrintStream out) {
         out.println(tyyppi);
         out.println(kesto);
@@ -113,22 +125,29 @@ public class Tyyppi {
         out.println(syke);
     }
     
-    
+	
+	/*
+	 * Tulostaa true/false halutaanko kerätä tietoa
+	 */
     public void tulosta(OutputStream os) {
         tulosta(new PrintStream(os));
     }
 
     
+    /**
+     * Testiohjelma Harrastukselle.
+     * @param args ei käytössä
+     */
     public static void main(String args[]) {
         Tyyppi treeni = new Tyyppi(), treeni2 = new Tyyppi();
         
-        treeni.luoTyyppi();
+        treeni.alusta();
         treeni.tulosta(System.out);
 
-        treeni2.luoTyyppi();
+        treeni2.alusta();
         treeni2.tulosta(System.out);
 
-        treeni2.luoTyyppi();
+        treeni2.alusta();
         treeni2.tulosta(System.out);
     }
 
