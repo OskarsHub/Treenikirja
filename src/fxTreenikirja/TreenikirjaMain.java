@@ -1,7 +1,6 @@
 package fxTreenikirja;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import treenikirja.treenikirja;
 import javafx.scene.Scene;

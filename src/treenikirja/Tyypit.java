@@ -1,5 +1,7 @@
 package treenikirja;
 
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Treenikirjan treenien tyypit
@@ -10,8 +12,7 @@ package treenikirja;
  */
 public class Tyypit {
 
-	private Tyyppi alkiot[] = new Tyyppi[8];
-	private int lkm = 0;
+	private final Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
 
 	
 	/*
@@ -29,21 +30,21 @@ public class Tyypit {
 		Tyyppi vesiurheilu = new Tyyppi();
 		
 		lenkki.alusta(0);
-		alkiot[0] = lenkki;
+		alkiot.add(lenkki);
 		sali.alusta(1);
-		alkiot[1] = sali;
+		alkiot.add(sali);
 		fitness.alusta(2);
-		alkiot[2] = fitness;
+		alkiot.add(fitness);
 		pyoraily.alusta(3);
-		alkiot[3] = pyoraily;
+		alkiot.add(pyoraily);
 		pallopelit.alusta(4);
-		alkiot[4] = pallopelit;
+		alkiot.add(pallopelit);
 		jooga.alusta(5);
-		alkiot[5] = jooga;
+		alkiot.add(jooga);
 		talviurheilu.alusta(6);
-		alkiot[6] = talviurheilu;
+		alkiot.add(talviurheilu);
 		vesiurheilu.alusta(7);
-		alkiot[7] = vesiurheilu;
+		alkiot.add(vesiurheilu);
 	}
 	
 	
@@ -51,7 +52,7 @@ public class Tyypit {
 	 * lis‰t‰‰n treenin tyyppi tietokantaan
 	 */
     public void lisaa(Tyyppi tyyppi) {
-        alkiot[lkm++] = tyyppi;
+        alkiot.add(tyyppi);
     }
 
     
@@ -59,15 +60,15 @@ public class Tyypit {
      * palauttaa treenientyyppien lukum‰‰r‰n
      */
 	public int getLkm() {
-		return lkm;
+		return alkiot.size();
 	}
 	
 	
 	/*
 	 * antaa valitun paikan treenin tiedot
 	 */
-    public Tyyppi anna(int i) throws IndexOutOfBoundsException {
-        return alkiot[i];
+    public Tyyppi anna(int i) {
+        return ((ArrayList<Tyyppi>) alkiot).get(i);
     }
     
     
