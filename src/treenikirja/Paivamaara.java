@@ -2,7 +2,10 @@ package treenikirja;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.time.LocalDate; 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import fi.jyu.mit.ohj2.Mjonot; 
 
 
 /**
@@ -11,11 +14,11 @@ import java.time.LocalDate;
  * @author Oskari Kainulainen
  * @version 25.03.2022
  * @version 28.03.2022 - bugikorjailua
+ * @version 7.4.2022 - HT6
  */
 public class Paivamaara {
 	public int         paivamaaraNro;
-	public LocalDate   paivamaara;
-	public int         id;
+	public String      paivamaara;
 	public String      treeniTyyppi;
 	public String      kesto;
 	public String      kalorit;
@@ -29,6 +32,8 @@ public class Paivamaara {
     public void luoTreeni() {
 
     	LocalDate paiva = java.time.LocalDate.now();
+    	DateTimeFormatter muotoilu = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    	paivamaara = paiva.format(muotoilu);
     	
     	Tyyppi tyyppi = new Tyyppi();
 		tyyppi.alusta();
@@ -39,7 +44,6 @@ public class Paivamaara {
 		askeleet  = null;
 		syke      = null;
 		
-        paivamaara = paiva;
         treeniTyyppi = tyyppi.tyyppi;
         
         if(tyyppi.kesto == true) {
@@ -62,9 +66,9 @@ public class Paivamaara {
         	syke = "140";
         }
         
-        paivamaaraNro++;
+        paivamaaraNro = Paivamaarat.getLkm();
     }
-
+    
     
 	/*
 	 * tulostaa p‰iv‰m‰‰r‰n tiedot
@@ -85,11 +89,44 @@ public class Paivamaara {
         out.println("syke: " + syke);
 	}
     
+	
     /*
      * tulostaa p‰iv‰m‰‰r‰n tiedot
      */
     public void tulosta(OutputStream os) {
         tulosta(new PrintStream(os));
+    }
+    
+    
+    /*
+     * Muutetaan p‰iv‰m‰‰r‰ tiedosto muotoon
+     */
+    public String toString() {
+        return "" +
+        		paivamaaraNro + "|" +
+        		paivamaara    + "|" +
+        		treeniTyyppi  + "|" +
+        		askeleet      + "|" +
+        		kalorit       + "|" +
+        		kesto         + "|" +
+        		matka         + "|" +
+        		syke          + "|";
+    }
+
+    
+    /*
+     * Muutetaan tiedostossa oleva muoto atribuuteille
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        paivamaaraNro = Mjonot.erota(sb, '|', paivamaaraNro);
+        paivamaara    = Mjonot.erota(sb, '|', paivamaara);
+        treeniTyyppi  = Mjonot.erota(sb, '|', treeniTyyppi);
+        askeleet      = Mjonot.erota(sb, '|', askeleet);
+        kalorit       = Mjonot.erota(sb, '|', kalorit);
+        kesto         = Mjonot.erota(sb, '|', kesto);
+        matka         = Mjonot.erota(sb, '|', matka);
+        syke          = Mjonot.erota(sb, '|', syke);
     }
     
     

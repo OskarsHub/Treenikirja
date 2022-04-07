@@ -1,11 +1,15 @@
 package treenikirja;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Treenikirja-luokka, joka huolehtii p‰iv‰m‰‰rist‰, sek‰ treenien tyypeist‰
  *
  * @author Oskari Kainulainen
- * @version 25.03.2022
- * @version 28.03.2022 - bugikorjauksia
+ * @version 05.03.2022
+ * @version 28.04.2022 - bugikorjauksia
+ * @version 7.4.2022 - HT6
  */
 
 	public class treenikirja {
@@ -15,12 +19,41 @@ package treenikirja;
 			
 
 		/*
+		 * Luetaan tiedostosta treeni tiedot
+		 */
+		public void lueTiedosto(String nimi) throws SailoException, FileNotFoundException {
+			setTiedosto(nimi);
+			paivamaarat.lueTiedostosta();
+		}
+		
+		
+		/*
+		 * Tiedoston teko
+		 */
+		private void setTiedosto(String nimi) throws FileNotFoundException {
+			File dir = new File(nimi);
+			dir.mkdirs();
+			String hakemistonNimi = "";
+			if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
+			paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
+		}
+
+
+		/*
+		 * Tallennetaan treeni
+		 */
+	    public void tallenna() throws SailoException {
+	    	paivamaarat.tallenna();
+	    }
+		
+		
+		
+		/*
 		 * Palauttaa treenikirjan p‰iv‰m‰‰rien m‰‰r‰n
 		 * @return p‰iv‰m‰‰rien m‰‰r‰n
 		 */
 		public int getPaivamaarat() {
-			return paivamaarat.getLkm();
-		        
+			return paivamaarat.getLkm();  
 		}
 		   
 
@@ -40,6 +73,7 @@ package treenikirja;
 		    return paivamaarat.anna(i);
 		}
 
+		
 		
 	    /**
 	     * Testiohjelma kerhosta
@@ -75,7 +109,3 @@ package treenikirja;
 		
 
 }
-
-
-			
-

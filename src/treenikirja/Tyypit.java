@@ -1,5 +1,10 @@
 package treenikirja;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,11 +13,13 @@ import java.util.Collection;
  *
  * @author Oskari Kainulainen
  * @version 25.03.2022
- * @version 28.03.2022 - bugikorjailua
+ * @version 05.04.2022 - Listakorjaus
  */
 public class Tyypit {
 
 	private final Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
+	
+	private String tiedostonPerusNimi = "nimet";
 
 	
 	/*
@@ -114,6 +121,7 @@ public class Tyypit {
         }
     	
     }
+    
 
 }
 

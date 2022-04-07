@@ -3,6 +3,7 @@ package fxTreenikirja;
 import java.io.IOException;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ModalController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import treenikirja.SailoException;
 
 /**
  * @author Oskari
@@ -36,15 +38,19 @@ public class UusiKayttajaGUIController {
 	
     /**
      * Scenen vaihtaminen p‰‰sivulle.
+     * @throws SailoException 
      */
-	public void vaihdaTreenikirja(ActionEvent event) throws IOException {
+	public void vaihdaTreenikirja(ActionEvent event) throws IOException, SailoException {
 		Parent root = FXMLLoader.load(getClass().getResource("TreenikirjaGUIView.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
 		
-		Dialogs.showMessageDialog("Viel‰ ei osata lis‰t‰ k‰ytt‰j‰‰");
+		String treenikirjaNimi =  nimikentta.getText();
+
+		TreenikirjaGUIController.avaa(treenikirjaNimi);
+
 	}
 	
     @FXML
@@ -56,4 +62,11 @@ public class UusiKayttajaGUIController {
     @FXML
     private Button peruuta;
     
+    
+    public static String kysyNimi(Stage modalityStage, String oletus) {
+    	return ModalController.showModal(
+    	UusiKayttajaGUIController.class.getResource("KayttajanKysyminenGUIView.fxml"),
+    	"Kerho",
+    	modalityStage, oletus);
+    	}
 }

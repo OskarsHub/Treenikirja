@@ -1,6 +1,10 @@
 package fxTreenikirja;
 
+import java.awt.Frame;
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.css.Style;
 import javafx.stage.Stage;
 import treenikirja.treenikirja;
 import javafx.scene.Scene;
@@ -14,9 +18,10 @@ import javafx.fxml.FXMLLoader;
  *
  */
 public class TreenikirjaMain extends Application {
+	
     @Override
-    public void start(Stage primaryStage) {
-        try {
+    public void start(Stage primaryStage) throws IOException {
+    	
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("TreenikirjaGUIView.fxml"));
             final Pane root = ldr.load();
             final TreenikirjaGUIController treenikirjaCtrl = (TreenikirjaGUIController)ldr.getController();
@@ -32,13 +37,9 @@ public class TreenikirjaMain extends Application {
             
             primaryStage.show();
             
-        	} catch(Exception e) {
-        		e.printStackTrace();
-        	}
     	}
     
-
-
+    
     /**
      * @param args Ei käytössä
      */

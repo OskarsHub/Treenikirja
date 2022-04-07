@@ -1,11 +1,13 @@
 package fxTreenikirja;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
+import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -31,13 +33,14 @@ import treenikirja.SailoException;
  * @author Oskari
  * @version 25.3.2022
  * @version 28.3.2022 - Bugikorjauksia
+ * @version 7.4.2022 - HT6
  */
 public class TreenikirjaGUIController {
 		
 	private Stage stage;
 	private Scene scene;
 	
-	treenikirja treenikirja = new treenikirja();
+	static treenikirja treenikirja = new treenikirja();
 	
 	
     @FXML
@@ -52,7 +55,6 @@ public class TreenikirjaGUIController {
     @FXML
     private ScrollPane treeniTaulukko;
     
-    
     @FXML
     void uusiTreeniButton(ActionEvent event) {
     	uusiTreeni();
@@ -61,6 +63,11 @@ public class TreenikirjaGUIController {
     @FXML
     void handleApua(ActionEvent event) {
     	Dialogs.showMessageDialog("Viel‰ ei tarvita apua");
+    }
+    
+    @FXML
+    void handleAvaa(ActionEvent event) {
+
     }
 
     @FXML
@@ -74,8 +81,8 @@ public class TreenikirjaGUIController {
     }
 
     @FXML
-    void handleTallenna(ActionEvent event) {
-    	Dialogs.showMessageDialog("Viel‰ ei osata tallentaa");
+    void handleTallenna(ActionEvent event) throws SailoException {
+    	tallenna();
     }
 
     @FXML
@@ -91,6 +98,8 @@ public class TreenikirjaGUIController {
     
     ///-----------------------------------------
     
+    
+    private String treenikirjaNimi = "Oletus";
     
 	/**
      * Scenen vaihtaminen k‰ytt‰j‰n kysymissivulle.
@@ -119,17 +128,21 @@ public class TreenikirjaGUIController {
         
     	paivamaaraLista.clear();
     	paivamaaraLista.addSelectionListener(e -> naytaJasen());
+    	lisaa();
         }
 
+    
     /*
      * Valitun p‰iv‰m‰‰r‰n n‰ytt‰mist‰ varten
      */  
     private Paivamaara paivamaaranKohdalla;
     
+    
     /*
      * alue johon valittu p‰iv‰m‰‰r‰ kirjoitetaan
      */
     private TextArea areaJasen = new TextArea();
+    
     
     /*
      * Luodaan uusi treeni ja arvotaan sille tyyppi
@@ -145,11 +158,12 @@ public class TreenikirjaGUIController {
 		}
     	lisaa(uusi.getPaivamaaranNro());
 	}
+	
         
 	/*
 	 * Lis‰t‰‰n luotu treeni p‰iv‰m‰‰r‰listaan
 	 */
-	private void lisaa(int paivamaaranNro) {
+	public void lisaa(int paivamaaranNro) {
 		
 		paivamaaraLista.clear();
 		
@@ -161,6 +175,21 @@ public class TreenikirjaGUIController {
 		}
 		paivamaaraLista.setSelectedIndex(index);
 	}
+	
+	/*
+	 * Lis‰t‰‰n tiedostosta tiedot
+	 */
+	public void lisaa() {
+		
+		int index = 0;
+		for (int i=0; i < treenikirja.getPaivamaarat(); i++) {
+			Paivamaara paivamaara = treenikirja.annaPaivamaara(i);
+			if (paivamaara.getPaivamaaranNro() == paivamaara.getPaivamaaranNro()) index = i;
+			paivamaaraLista.add(paivamaara.getPaivamaara(), paivamaara);
+		}
+		paivamaaraLista.setSelectedIndex(index);
+	}
+	
 
 	/*
 	 * Valitun p‰iv‰m‰‰r‰n tiedot
@@ -173,6 +202,7 @@ public class TreenikirjaGUIController {
             tulosta(os,paivamaaranKohdalla);  
         }
     }
+    
 
 	/*
 	 * Tulostaa valitun p‰iv‰m‰‰r‰n tiedot ruudulle
@@ -181,11 +211,29 @@ public class TreenikirjaGUIController {
 		paiva.tulosta(os);
 	}
 	
+	
 	/*
 	 * Valittu treenikirja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
 	 */
 	public void setTreenikirja(treenikirja treenikirja) {
 		this.treenikirja = treenikirja;
 	}
+	
+	
+	/*
+	 * Luetaan tiedosto
+	 */
+    public static void avaa(String nimi) throws SailoException, FileNotFoundException {
+    	treenikirja.lueTiedosto(nimi);
+    }
+    
+    
+    /*
+     * Tallennetaan
+     */
+    public void tallenna() throws SailoException {
+    	treenikirja.tallenna();
+    }
+    
 	
 }
