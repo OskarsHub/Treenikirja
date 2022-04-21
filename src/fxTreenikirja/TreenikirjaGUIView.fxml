@@ -38,8 +38,8 @@
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Vaihda käyttäjä" />
                   <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">

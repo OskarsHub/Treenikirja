@@ -1,7 +1,9 @@
 package treenikirja;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,12 +16,13 @@ import java.util.Collection;
  * @author Oskari Kainulainen
  * @version 25.03.2022
  * @version 05.04.2022 - Listakorjaus
+ * @version 21.4.2022 - HT6 uusi
  */
 public class Tyypit {
 
 	private final Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
 	
-	private String tiedostonPerusNimi = "nimet";
+	private String tiedostonPerusNimi = "";
 
 	
 	/*
@@ -52,6 +55,7 @@ public class Tyypit {
 		alkiot.add(talviurheilu);
 		vesiurheilu.alusta(7);
 		alkiot.add(vesiurheilu);
+		
 	}
 	
 	
@@ -78,6 +82,75 @@ public class Tyypit {
         return ((ArrayList<Tyyppi>) alkiot).get(i);
     }
     
+    
+	public void setTiedostonPerusNimi(String nimi) {
+		tiedostonPerusNimi = nimi;
+	}
+    
+	
+	/*
+	 * Tiedoston nimi p‰‰tteineen
+	 */
+    public String getTiedostonNimi() {
+        return getTiedostonPerusNimi() + ".dat";
+    }
+    
+    
+    /*
+     * tiedoston nimi johon tieto tallennetaan
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+    
+    
+    /*
+     * Luetaan tiedostosta tyypit
+     */
+	public void lueTiedostosta(String nimi) throws IOException {
+		
+        BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi()));
+        String rivi = null;
+        	
+        while ( (rivi = fi.readLine()) != null ) {
+        	rivi = rivi.trim();
+        	Tyyppi tyyppi = new Tyyppi();
+        	tyyppi.parse(rivi);
+        	lisaa(tyyppi);
+        }
+            
+	}
+	
+	
+    /*
+     * Tallennetaan tyyppien tiedot
+     */
+	public void tallenna() throws SailoException {
+        
+		if (alkiot.isEmpty()) {
+			alusta();
+		}
+		
+        File ftied = new File(getTiedostonNimi());
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            for (Tyyppi tyyppi : alkiot) {
+            	
+            	if (tyyppi == null) {
+            		break;
+            	}
+            	
+                fo.println(tyyppi.toString());
+            }
+            
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
+        }
+    
+	}
+	
     
     /**
      * Testiohjelma harrastuksille
@@ -121,7 +194,6 @@ public class Tyypit {
         }
     	
     }
-    
-
+	
 }
 

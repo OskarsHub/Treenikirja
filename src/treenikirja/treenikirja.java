@@ -2,40 +2,44 @@ package treenikirja;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
- * Treenikirja-luokka, joka huolehtii päivämääristä, sekä treenien tyypeistä
+ * Treenikirja-luokka, joka huolehtii pivmrist, sek treenien tyypeist
  *
  * @author Oskari Kainulainen
  * @version 05.03.2022
  * @version 28.04.2022 - bugikorjauksia
  * @version 7.4.2022 - HT6
+ * @version 21.4.2022 - HT6 uusi
  */
 
 	public class treenikirja {
 			
-		private Tyypit tyypit = new Tyypit();
-		private Paivamaarat paivamaarat = new Paivamaarat();
+		private static Tyypit tyypit = new Tyypit();
+		private static Paivamaarat paivamaarat = new Paivamaarat();
 			
 
 		/*
 		 * Luetaan tiedostosta treeni tiedot
 		 */
-		public void lueTiedosto(String nimi) throws SailoException, FileNotFoundException {
+		public void lueTiedosto(String nimi) throws SailoException, IOException {
 			setTiedosto(nimi);
-			paivamaarat.lueTiedostosta();
+			paivamaarat.lueTiedostosta(nimi);
+			tyypit.lueTiedostosta(nimi);
 		}
 		
 		
 		/*
 		 * Tiedoston teko
 		 */
-		private void setTiedosto(String nimi) throws FileNotFoundException {
+		private static void setTiedosto(String nimi) throws FileNotFoundException {
 			File dir = new File(nimi);
 			dir.mkdirs();
 			String hakemistonNimi = "";
 			if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
 			paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
+			tyypit.setTiedostonPerusNimi(hakemistonNimi + "tyypit");
 		}
 
 
@@ -44,8 +48,8 @@ import java.io.FileNotFoundException;
 		 */
 	    public void tallenna() throws SailoException {
 	    	paivamaarat.tallenna();
+	    	tyypit.tallenna();
 	    }
-		
 		
 		
 		/*
@@ -77,7 +81,7 @@ import java.io.FileNotFoundException;
 		
 	    /**
 	     * Testiohjelma kerhosta
-	     * @param args ei käytössä
+	     * @param args ei kytss
 	     */
 		public static void main(String args[]) {
 
@@ -95,7 +99,7 @@ import java.io.FileNotFoundException;
 
 		        for (int i = 0; i < treenikirja.getPaivamaarat(); i++) {
 		            Paivamaara maara = treenikirja.annaPaivamaara(i);
-		            System.out.println("Päivämäärä paikassa: " + i);
+		            System.out.println("Pivmr paikassa: " + i);
 		            maara.tulosta(System.out);
 		        }
 		        

@@ -9,7 +9,7 @@
     <target name="create_run_jar">
         <jar destfile="${dir.jarfile}/Treenikirja.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="fxTreenikirja.KayttajanKysyminenMain"/>
+                <attribute name="Main-Class" value="fxTreenikirja.TreenikirjaMain"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.jarfile}/bin"/>

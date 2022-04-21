@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Random;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 
 /**
  * Treenikirjan treenien osa jolla voidaan alustaa jokainen treeni
@@ -11,6 +13,7 @@ import java.util.Random;
  * @author Oskari Kainulainen
  * @version 25.03.2022
  * @version 28.03.2022 - bugikorjailua
+ * @version 21.4.2022 - HT6 uusi
  */
 public class Tyyppi {
 	
@@ -29,6 +32,7 @@ public class Tyyppi {
     public void alusta(int tyyppiId) {
 		
         if (tyyppiId == 0) {
+        	id         = 0;
         	tyyppi     = "Lenkki";
             kesto      = true;
             kalorit    = true;
@@ -38,6 +42,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 1) {
+        	id         = 1;
         	tyyppi     = "Sali";
             kesto      = false;
             kalorit    = true;
@@ -47,6 +52,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 2) {
+        	id         = 2;
         	tyyppi     = "Fitness";
             kesto      = false;
             kalorit    = true;
@@ -56,6 +62,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 3) {
+        	id         = 3;
         	tyyppi     = "Pyöräily";
             kesto      = true;
             kalorit    = true;
@@ -65,6 +72,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 4) {
+        	id         = 4;
         	tyyppi     = "Pallopelit";
             kesto      = true;
             kalorit    = true;
@@ -74,6 +82,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 5) {
+        	id         = 5;
         	tyyppi     = "Jooga";
             kesto      = true;
             kalorit    = false;
@@ -83,6 +92,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 6) {
+        	id         = 6;
         	tyyppi     = "Talviurheilu";
             kesto      = true;
             kalorit    = true;
@@ -92,6 +102,7 @@ public class Tyyppi {
         }
         
         if (tyyppiId == 7) {
+        	id         = 7;
         	tyyppi     = "Vesiurheilu";
             kesto      = true;
             kalorit    = true;
@@ -113,6 +124,36 @@ public class Tyyppi {
 	}
     
 	
+    /*
+     * Muutetaan tiedostossa oleva muoto atribuuteille
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        id             = Mjonot.erota(sb, '|', id);
+        tyyppi         = Mjonot.erota(sb, '|', tyyppi);
+        kesto          = Mjonot.erota(sb, '|', kesto) != null;
+        kalorit        = Mjonot.erota(sb, '|', kalorit) != null;
+        matka          = Mjonot.erota(sb, '|', matka) != null;
+        askeleet       = Mjonot.erota(sb, '|', askeleet) != null;
+        syke           = Mjonot.erota(sb, '|', syke) != null;
+    }
+	
+	
+    /*
+     * Muutetaan tyypit tiedosto muotoon
+     */
+    public String toString() {
+        return "" +
+        		id         + "|" +
+        		tyyppi     + "|" +
+        		kesto      + "|" +
+        		kalorit    + "|" +
+        		matka      + "|" +
+        		askeleet   + "|" +
+        		syke       + "|" ;
+    }
+    
+    
 	/*
 	 * Tulostaa true/false halutaanko kerätä tietoa
 	 */

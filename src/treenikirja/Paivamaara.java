@@ -9,12 +9,13 @@ import fi.jyu.mit.ohj2.Mjonot;
 
 
 /**
- * Treenikirjan osa joka osaa tehdä uuden treenin
+ * Treenikirjan osa joka osaa tehd uuden treenin
  *
  * @author Oskari Kainulainen
  * @version 25.03.2022
  * @version 28.03.2022 - bugikorjailua
  * @version 7.4.2022 - HT6
+ * @version 21.4.2022 - HT6 uusi
  */
 public class Paivamaara {
 	public int         paivamaaraNro;
@@ -148,8 +149,8 @@ public class Paivamaara {
 
 
     /**
-     * Testiohjelma jäsenelle.
-     * @param args ei käytössä
+     * Testiohjelma päivämäärille.
+     * @param args ei kytss
      */
     public static void main(String args[]) {
         Paivamaara treeni = new Paivamaara(), treeni2 = new Paivamaara();

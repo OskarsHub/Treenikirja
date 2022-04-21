@@ -1,29 +1,22 @@
 package fxTreenikirja;
 
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
-import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import treenikirja.Paivamaara;
 import treenikirja.treenikirja;
 import treenikirja.SailoException;
@@ -34,13 +27,11 @@ import treenikirja.SailoException;
  * @version 25.3.2022
  * @version 28.3.2022 - Bugikorjauksia
  * @version 7.4.2022 - HT6
+ * @version 21.4.2022 - HT6 uusi
  */
 public class TreenikirjaGUIController {
-		
-	private Stage stage;
-	private Scene scene;
 	
-	static treenikirja treenikirja = new treenikirja();
+	treenikirja treenikirja = new treenikirja();
 	
 	
     @FXML
@@ -66,8 +57,8 @@ public class TreenikirjaGUIController {
     }
     
     @FXML
-    void handleAvaa(ActionEvent event) {
-
+    void handleAvaa(ActionEvent event) throws SailoException, IOException {
+    	avaa();
     }
 
     @FXML
@@ -83,6 +74,7 @@ public class TreenikirjaGUIController {
     @FXML
     void handleTallenna(ActionEvent event) throws SailoException {
     	tallenna();
+    	Dialogs.showMessageDialog("Tallennettu");
     }
 
     @FXML
@@ -99,22 +91,6 @@ public class TreenikirjaGUIController {
     ///-----------------------------------------
     
     
-    private String treenikirjaNimi = "Oletus";
-    
-	/**
-     * Scenen vaihtaminen käyttäjän kysymissivulle.
-     */
-    public void vaihdaKayttaja(ActionEvent event) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("KayttajanKysyminenGUIView.fxml"));
-		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		
-		Dialogs.showMessageDialog("Tietoja ei tallennettu");
-    }
-
-    
     /**
      * treenityyppien ja hakuehtojen lisääminen comboBoxiin, sekä paivamaaraListaan kuuntelija
      */
@@ -128,7 +104,6 @@ public class TreenikirjaGUIController {
         
     	paivamaaraLista.clear();
     	paivamaaraLista.addSelectionListener(e -> naytaJasen());
-    	lisaa();
         }
 
     
@@ -213,7 +188,7 @@ public class TreenikirjaGUIController {
 	
 	
 	/*
-	 * Valittu treenikirja jota käytetään tässä käyttöliittymässä
+	 * Valittu treenikirja jota käytetään tässä kyttöliittymssä
 	 */
 	public void setTreenikirja(treenikirja treenikirja) {
 		this.treenikirja = treenikirja;
@@ -223,8 +198,11 @@ public class TreenikirjaGUIController {
 	/*
 	 * Luetaan tiedosto
 	 */
-    public static void avaa(String nimi) throws SailoException, FileNotFoundException {
-    	treenikirja.lueTiedosto(nimi);
+    public void avaa() throws SailoException, IOException {
+    	String uusinimi = KayttajanKysyminenController.kysyNimi();
+    	treenikirja.lueTiedosto(uusinimi);
+		paivamaaraLista.clear();
+    	lisaa();
     }
     
     

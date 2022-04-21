@@ -11,12 +11,13 @@ import java.util.Arrays;
 
 
 /**
- * Treenikirjan päivämäärät
+ * Treenikirjan pivmrt
  *
  * @author Oskari Kainulainen
  * @version 25.03.2022
  * @version 28.03.2022 - bugikorjailua
  * @version 7.4.2022 - HT6
+ * @version 21.4.2022 - HT6 uusi
  */
 
 public class Paivamaarat {
@@ -28,7 +29,7 @@ public class Paivamaarat {
 	
 	
 	/*
-	 * Lisää uuden päivämäärän tietorakenteeseen
+	 * Lis uuden pivmrn tietorakenteeseen
 	 */
     public void lisaa(Paivamaara treeni) throws SailoException {
         if (lkm >= alkiot.length) {
@@ -39,7 +40,7 @@ public class Paivamaarat {
     
     
     /*
-     * Palauttaa viitteen i:teen päivämäärään
+     * Palauttaa viitteen i:teen pivmrn
      */
     public Paivamaara anna(int i) {
         return alkiot[i];
@@ -55,16 +56,25 @@ public class Paivamaarat {
 
     
     /*
+     * Nollataan tiedot käyttäjää vaihdettaessa
+     */
+    public void nollaa() {
+    	Arrays.fill(alkiot, null);
+    	lkm = 0;
+    }
+    
+    /*
      * Luetaan tiedostosta treenit ja muutetaan ne atribuuteille
      */
-	public void lueTiedostosta() throws SailoException{
-
+	public void lueTiedostosta(String nimi) throws SailoException, FileNotFoundException{
+		
+		nollaa();
+		
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
-            String rivi = fi.readLine();
-
+        	String rivi = null;
+        	
             while ( (rivi = fi.readLine()) != null ) {
-                rivi = rivi.trim();
-                if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;
+            	rivi = rivi.trim();
                 Paivamaara paivamaara = new Paivamaara();
                 paivamaara.parse(rivi);
                 lisaa(paivamaara);
@@ -128,8 +138,8 @@ public class Paivamaarat {
     
     
     /**
-     * Testiohjelma jäsenistölle
-     * @param args ei käytössä
+     * Testiohjelma jsenistlle
+     * @param args ei kytss
      */
     public static void main(String args[]) {
     	Paivamaarat paivamaarat = new Paivamaarat();
