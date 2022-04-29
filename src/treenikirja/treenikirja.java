@@ -12,6 +12,7 @@ import java.io.IOException;
  * @version 28.04.2022 - bugikorjauksia
  * @version 7.4.2022 - HT6
  * @version 21.4.2022 - HT6 uusi
+ * @version 29.4.2022 - HT7
  */
 
 	public class treenikirja {
@@ -19,14 +20,27 @@ import java.io.IOException;
 		private static Tyypit tyypit = new Tyypit();
 		private static Paivamaarat paivamaarat = new Paivamaarat();
 			
+		
+		/*
+		 * Tarkistetaan onko annetun k‰ytt‰j‰n nimell‰ tiedostoa
+		 * @return true tai false sen mukaan onko tiedostoa
+		 */
+		public boolean kysy(String uusinimi) {
+			File t = new File(uusinimi);
+			if(t.exists()) {
+				return true;
+			}
+			return false;
+		}
+		
 
 		/*
 		 * Luetaan tiedostosta treeni tiedot
 		 */
 		public void lueTiedosto(String nimi) throws SailoException, IOException {
 			setTiedosto(nimi);
-			paivamaarat.lueTiedostosta(nimi);
-			tyypit.lueTiedostosta(nimi);
+			Tyypit.lueTiedostosta(nimi);
+			Paivamaarat.lueTiedostosta(nimi);
 		}
 		
 		
@@ -38,8 +52,8 @@ import java.io.IOException;
 			dir.mkdirs();
 			String hakemistonNimi = "";
 			if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
-			paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
-			tyypit.setTiedostonPerusNimi(hakemistonNimi + "tyypit");
+			Paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
+			Tyypit.setTiedostonPerusNimi(hakemistonNimi + "tyypit");
 		}
 
 
@@ -48,7 +62,6 @@ import java.io.IOException;
 		 */
 	    public void tallenna() throws SailoException {
 	    	paivamaarat.tallenna();
-	    	tyypit.tallenna();
 	    }
 		
 		
@@ -56,14 +69,25 @@ import java.io.IOException;
 		 * Palauttaa treenikirjan p‰iv‰m‰‰rien m‰‰r‰n
 		 * @return p‰iv‰m‰‰rien m‰‰r‰n
 		 */
+		@SuppressWarnings("static-access")
 		public int getPaivamaarat() {
 			return paivamaarat.getLkm();  
 		}
 		   
+		
+		/*
+		 * Palauttaa treenikirjan treenityyppien m‰‰r‰n
+		 * @return tyyppien m‰‰r‰n
+		 */
+		public int getTyypit() {
+			return tyypit.getLkm();  
+		}
+		
 
 		/*
 		 * Lis‰‰ uuden p‰iv‰m‰‰r‰n
 		 */
+		@SuppressWarnings("static-access")
 		public void lisaa(Paivamaara paivamaara) throws SailoException {
 			paivamaarat.lisaa(paivamaara);
 		}

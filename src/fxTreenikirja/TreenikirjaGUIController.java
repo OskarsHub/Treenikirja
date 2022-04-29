@@ -1,12 +1,11 @@
 package fxTreenikirja;
 
 
+
 import java.io.IOException;
-import java.io.PrintStream;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
-import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,10 +13,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.text.Font;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import treenikirja.Paivamaara;
+import treenikirja.Paivamaarat;
 import treenikirja.treenikirja;
 import treenikirja.SailoException;
 
@@ -28,6 +27,7 @@ import treenikirja.SailoException;
  * @version 28.3.2022 - Bugikorjauksia
  * @version 7.4.2022 - HT6
  * @version 21.4.2022 - HT6 uusi
+ * @version 29.4.2022 - HT7
  */
 public class TreenikirjaGUIController {
 	
@@ -35,25 +35,56 @@ public class TreenikirjaGUIController {
 	
 	
     @FXML
+    private TextField askeleet;
+    
+    @FXML
+    private TextField kalorit;
+    
+    @FXML
+    private Text kcalText;
+
+    @FXML
+    private TextField kestoH;
+    
+    @FXML
+    private Text hText;
+
+    @FXML
+    private TextField kestoMin;
+
+    @FXML
+    private Text minText;
+
+    @FXML
+    private TextField matka;
+    
+    @FXML
+    private Text kmText;
+
+    @FXML
+    private TextField syke;
+    
+    @FXML
+    private Text bpmText;
+    
+    @FXML
+    private Text treeninPaivamaaraTiedot;
+	
+    @FXML
     private ListChooser<Paivamaara> paivamaaraLista;
     
     @FXML
     private ComboBox<String> hakuehto;
+    
+    @FXML
+    private ComboBox<String> treeniTyypit;
 
     @FXML
     private Button tallennaButton;
     
     @FXML
-    private ScrollPane treeniTaulukko;
-    
-    @FXML
     void uusiTreeniButton(ActionEvent event) {
     	uusiTreeni();
-    }
-    
-    @FXML
-    void handleApua(ActionEvent event) {
-    	Dialogs.showMessageDialog("Viel‰ ei tarvita apua");
     }
     
     @FXML
@@ -67,56 +98,62 @@ public class TreenikirjaGUIController {
     }
 
     @FXML
-    void handlePoistaTreeni(ActionEvent event) {
-    	Dialogs.showMessageDialog("Viel‰ ei osata poistaa treeni‰");
+    void handlePoistaTreeni(ActionEvent event) throws SailoException {
+    	poistaTreeni();
     }
 
-    @FXML
+	@FXML
     void handleTallenna(ActionEvent event) throws SailoException {
     	tallenna();
     	Dialogs.showMessageDialog("Tallennettu");
     }
-
+	
     @FXML
-    void handleTietoja(ActionEvent event) {
-    	Dialogs.showMessageDialog("Viel‰ ei ole tietoja");
+    void handleAlaTallenna(ActionEvent event) throws SailoException {
+    	tallenna();
+    	Dialogs.showMessageDialog("Tallennettu");
     }
 
     @FXML
     void handleUusiTreeni(ActionEvent event) {
     	uusiTreeni();
     }
+    
+    @FXML
+    void valitaanTreenityyppi(ActionEvent event) {
+    	uusiTreenityyppi(treeniTyypit.getValue());
+    }
+    
+    @FXML
+    void handleHakuTreenit(ActionEvent event) {
+    	hae(hakuehto.getValue());
+    }
 
     
-    ///-----------------------------------------
+
+	///-----------------------------------------
     
     
     /**
-     * treenityyppien ja hakuehtojen lis‰‰minen comboBoxiin, sek‰ paivamaaraListaan kuuntelija
+     * treenityyppien ja hakuehtojen lis‰‰minen comboBoxeille, sek‰ paivamaaraListaan kuuntelija
+     * @throws IOException 
      */
-    public void initialize() {
-    	ObservableList<String> hakuehdot = FXCollections.observableArrayList("P‰iv‰m‰‰r‰", "Treenin tyyppi");
+    public void initialize() throws IOException {
+    	ObservableList<String> hakuehdot = FXCollections.observableArrayList("Kaikki", "Lenkki", "Sali", "Fitness", "Pyˆr‰ily", "Pallopelit", "Jooga", "Talviurheilu", "Vesiurheilu");
+    	ObservableList<String> tyypit    = FXCollections.observableArrayList("Lenkki", "Sali", "Fitness", "Pyˆr‰ily", "Pallopelit", "Jooga", "Talviurheilu", "Vesiurheilu");
     	hakuehto.setItems(hakuehdot);
+    	treeniTyypit.setItems(tyypit);
     	
-    	treeniTaulukko.setContent(areaJasen);
-        areaJasen.setFont(new Font("Courier New", 12));
-        treeniTaulukko.setFitToHeight(true);
         
     	paivamaaraLista.clear();
     	paivamaaraLista.addSelectionListener(e -> naytaJasen());
-        }
+    }
 
     
     /*
      * Valitun p‰iv‰m‰‰r‰n n‰ytt‰mist‰ varten
      */  
     private Paivamaara paivamaaranKohdalla;
-    
-    
-    /*
-     * alue johon valittu p‰iv‰m‰‰r‰ kirjoitetaan
-     */
-    private TextArea areaJasen = new TextArea();
     
     
     /*
@@ -128,10 +165,119 @@ public class TreenikirjaGUIController {
     	try {
 			treenikirja.lisaa(uusi);
 		} catch (SailoException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
 		}
     	lisaa(uusi.getPaivamaaranNro());
+	}
+	
+	
+	/*
+	 * Poistetaan valittu treeni
+	 */
+    private void poistaTreeni() throws SailoException {
+    	Paivamaarat.poista(paivamaaranKohdalla);
+    	lisaa();
+	}
+    
+	/*
+	 * Asetetaan treenille treenityyppi
+	 */
+    private void uusiTreenityyppi(String valinta) {
+    	paivamaaranKohdalla = paivamaaraLista.getSelectedObject();
+    	
+    	askeleet.setText("");
+    	kalorit.setText("");
+    	kestoH.setText("");
+    	kestoMin.setText("");
+    	matka.setText("");
+    	syke.setText("");
+
+    	if (valinta == null) {
+    		valinta = "";
+    	}
+    	
+    	if (valinta.equals("Lenkki")) {
+    		
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(true);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(true);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Sali")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(false);
+    		kestoMin. setVisible(false);
+    		matka.    setVisible(false);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Fitness")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(false);
+    		kestoMin. setVisible(false);
+    		matka.    setVisible(false);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Pyˆr‰ily")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(true);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Pallopelit")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(false);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Jooga")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(false);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(false);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Talviurheilu")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(false);
+    		syke.     setVisible(true);
+    	}
+    	
+    	if (valinta.equals("Vesiurheilu")) {
+    		paivamaaranKohdalla.treeniTyyppi = (valinta);
+    		askeleet. setVisible(false);
+    		kalorit.  setVisible(true);
+    		kestoH.   setVisible(true);
+    		kestoMin. setVisible(true);
+    		matka.    setVisible(true);
+    		syke.     setVisible(true);
+    	}
+    	
 	}
 	
         
@@ -150,11 +296,14 @@ public class TreenikirjaGUIController {
 		}
 		paivamaaraLista.setSelectedIndex(index);
 	}
+
 	
 	/*
 	 * Lis‰t‰‰n tiedostosta tiedot
 	 */
 	public void lisaa() {
+		
+		paivamaaraLista.clear();
 		
 		int index = 0;
 		for (int i=0; i < treenikirja.getPaivamaarat(); i++) {
@@ -165,28 +314,119 @@ public class TreenikirjaGUIController {
 		paivamaaraLista.setSelectedIndex(index);
 	}
 	
+	
+	/*
+	 * Treenintyyppien haun j‰lkeen lis‰t‰‰n lˆydetyt treenit listaan
+	 */
+	private void lisaa(String tyyppi) {
+		
+		paivamaaraLista.clear();
+
+		for (int i=0; i < treenikirja.getPaivamaarat(); i++) {
+			Paivamaara paivamaara = treenikirja.annaPaivamaara(i);
+			if (paivamaara.treeniTyyppi == tyyppi) {
+			paivamaaraLista.add(paivamaara.getPaivamaara(), paivamaara);
+			}
+		paivamaaraLista.setSelectedIndex(i);
+		}
+		
+	}
+	
 
 	/*
 	 * Valitun p‰iv‰m‰‰r‰n tiedot
 	 */
     protected void naytaJasen() {
+    	
+    	if (paivamaaranKohdalla != null) {
+    		setUudet();
+    	}
+    	
     	paivamaaranKohdalla = paivamaaraLista.getSelectedObject();
 
-        areaJasen.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaJasen)) {
-            tulosta(os,paivamaaranKohdalla);  
-        }
+    	askeleet.setText("");
+    	kalorit.setText("");
+    	kestoH.setText("");
+    	kestoMin.setText("");
+    	matka.setText("");
+    	syke.setText("");
+
+        tulosta(paivamaaranKohdalla);  
+        
     }
     
+    
+    /*
+     * Treeni‰ vaihdettaessa tallennetaan annetut tiedot talteen
+     */
+	private void setUudet() {
+		paivamaaranKohdalla.askeleet = askeleet.getText();
+		paivamaaranKohdalla.kalorit = kalorit.getText();
+		paivamaaranKohdalla.kestoH = kestoH.getText();
+		paivamaaranKohdalla.kestoMin = kestoMin.getText();
+		paivamaaranKohdalla.matka = matka.getText();
+		paivamaaranKohdalla.syke = syke.getText();
+	}
 
 	/*
-	 * Tulostaa valitun p‰iv‰m‰‰r‰n tiedot ruudulle
+	 * Tulostaa valitun p‰iv‰m‰‰r‰n tiedot oikeisiin ruutuihin
 	 */
-	public void tulosta(PrintStream os, Paivamaara paiva) {
-		paiva.tulosta(os);
+	public void tulosta(Paivamaara paiva) {
+		treeniTyypit.setValue(paiva.treeniTyyppi);
+		askeleet.setText(paiva.askeleet);
+		kalorit.setText(paiva.kalorit);
+		kestoH.setText(paiva.kestoH);
+		kestoMin.setText(paiva.kestoMin);
+		matka.setText(paiva.matka);
+		syke.setText(paiva.syke);
+		
+		treeninPaivamaaraTiedot.setText(paiva.paivamaara);
 	}
 	
 	
+	/*
+	 * Treenityyppien hakeminen
+	 */
+	private void hae(String tyyppi) {
+		
+		if (tyyppi.equals("Kaikki")) {
+			lisaa();
+    	}
+		
+		if (tyyppi.equals("Lenkki")) {
+			lisaa("Lenkki");
+    	}
+    	
+    	if (tyyppi.equals("Sali")) {
+    		lisaa("Sali");
+    	}
+    	
+    	if (tyyppi.equals("Fitness")) {
+    		lisaa("Fitness");
+    	}
+    	
+    	if (tyyppi.equals("Pyˆr‰ily")) {
+    		lisaa("Pyˆr‰ily");
+    	}
+    	
+    	if (tyyppi.equals("Pallopelit")) {
+    		lisaa("Pallopelit");
+    	}
+    	
+    	if (tyyppi.equals("Jooga")) {
+    		lisaa("Jooga");
+    	}
+    	
+    	if (tyyppi.equals("Talviurheilu")) {
+    		lisaa("Talviurheilu");
+    	}
+    	
+    	if (tyyppi.equals("Vesiurheilu")) {
+    		lisaa("Vesiurheilu");
+    	}
+	}
+	
+
 	/*
 	 * Valittu treenikirja jota k‰ytet‰‰n t‰ss‰ kyttˆliittymss‰
 	 */
@@ -200,6 +440,16 @@ public class TreenikirjaGUIController {
 	 */
     public void avaa() throws SailoException, IOException {
     	String uusinimi = KayttajanKysyminenController.kysyNimi();
+    	boolean onkoOlemassa = treenikirja.kysy(uusinimi);
+    	
+    	if (onkoOlemassa == false) {
+    		onkoOlemassa = KayttajanKysyminenController.varmista(uusinimi);
+    		
+    		if (onkoOlemassa == false) {
+    			return;
+    		}
+    	}
+    	
     	treenikirja.lueTiedosto(uusinimi);
 		paivamaaraLista.clear();
     	lisaa();
@@ -210,6 +460,7 @@ public class TreenikirjaGUIController {
      * Tallennetaan
      */
     public void tallenna() throws SailoException {
+    	setUudet();
     	treenikirja.tallenna();
     }
     

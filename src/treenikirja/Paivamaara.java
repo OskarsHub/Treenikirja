@@ -16,12 +16,14 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 28.03.2022 - bugikorjailua
  * @version 7.4.2022 - HT6
  * @version 21.4.2022 - HT6 uusi
+ * @version 29.4.2022 - HT7
  */
 public class Paivamaara {
 	public int         paivamaaraNro;
 	public String      paivamaara;
 	public String      treeniTyyppi;
-	public String      kesto;
+	public String      kestoH;
+	public String      kestoMin;
 	public String      kalorit;
 	public String      matka;
 	public String      askeleet;
@@ -35,38 +37,14 @@ public class Paivamaara {
     	LocalDate paiva = java.time.LocalDate.now();
     	DateTimeFormatter muotoilu = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     	paivamaara = paiva.format(muotoilu);
-    	
-    	Tyyppi tyyppi = new Tyyppi();
-		tyyppi.alusta();
 		
-		kesto     = null;
+		kestoH    = null;
+		kestoMin  = null;
 		kalorit   = null;
 		matka     = null;
 		askeleet  = null;
 		syke      = null;
 		
-        treeniTyyppi = tyyppi.tyyppi;
-        
-        if(tyyppi.kesto == true) {
-        	kesto = "1" + " h " + "30" + " min";
-        }
-        
-        if(tyyppi.kalorit == true) {
-        	kalorit = "40";
-        }
-        
-        if(tyyppi.matka == true) {
-        	matka = "10" + " km";
-        }
-        
-        if(tyyppi.askeleet == true) {
-        	askeleet = "15000";
-        }
-        
-        if(tyyppi.syke) {
-        	syke = "140";
-        }
-        
         paivamaaraNro = Paivamaarat.getLkm();
     }
     
@@ -79,7 +57,7 @@ public class Paivamaara {
         out.println(paivamaara);
         out.println(treeniTyyppi);
         
-        out.println("kesto: " + kesto);
+        out.println("kesto: " + kestoH + "tuntia" + kestoMin + "minuuttia");
 
         out.println("kalorit: " + kalorit);
 
@@ -109,9 +87,10 @@ public class Paivamaara {
         		treeniTyyppi  + "|" +
         		askeleet      + "|" +
         		kalorit       + "|" +
-        		kesto         + "|" +
+        		kestoH        + "|" +
+        		kestoMin      + "|" +
         		matka         + "|" +
-        		syke          + "|";
+        		syke          + "|" ;
     }
 
     
@@ -125,7 +104,8 @@ public class Paivamaara {
         treeniTyyppi  = Mjonot.erota(sb, '|', treeniTyyppi);
         askeleet      = Mjonot.erota(sb, '|', askeleet);
         kalorit       = Mjonot.erota(sb, '|', kalorit);
-        kesto         = Mjonot.erota(sb, '|', kesto);
+        kestoH        = Mjonot.erota(sb, '|', kestoH);
+        kestoMin      = Mjonot.erota(sb, '|', kestoMin);
         matka         = Mjonot.erota(sb, '|', matka);
         syke          = Mjonot.erota(sb, '|', syke);
     }
@@ -137,6 +117,15 @@ public class Paivamaara {
     public int getPaivamaaranNro() {
     	return paivamaaraNro;
     }
+    
+    
+    /*
+     * Palauttaa valitun p‰iv‰m‰‰r‰n numeron
+     */
+	public static int getPaivamaaraNro(Paivamaara paivamaara) {
+		int nro = paivamaara.paivamaaraNro;
+		return nro;
+	}
     
     
     /*
@@ -163,5 +152,6 @@ public class Paivamaara {
         treeni2.luoTreeni();
         treeni2.tulosta(System.out);
     }
+
 
 }

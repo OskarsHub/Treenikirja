@@ -18,24 +18,36 @@ import java.util.Arrays;
  * @version 28.03.2022 - bugikorjailua
  * @version 7.4.2022 - HT6
  * @version 21.4.2022 - HT6 uusi
+ * @version 29.4.2022 - HT7
  */
 
 public class Paivamaarat {
 	
 	
-	public Paivamaara alkiot[] = new Paivamaara[10];
+	public static Paivamaara alkiot[] = new Paivamaara[10];
 	private static int lkm = 0;
 	private static String tiedostonPerusNimi = "";
 	
 	
 	/*
-	 * Lis uuden pivmrn tietorakenteeseen
+	 * Lis‰‰ uuden p‰iv‰m‰‰r‰n tietorakenteeseen
 	 */
-    public void lisaa(Paivamaara treeni) throws SailoException {
+    public static void lisaa(Paivamaara treeni) throws SailoException {
         if (lkm >= alkiot.length) {
         	alkiot = Arrays.copyOf(alkiot, alkiot.length+10);
         }
         alkiot[lkm++] = treeni;
+    }
+    
+    
+    /*
+     * Poistaa treenin alkioista
+     */
+    public static void poista(Paivamaara treeni) throws SailoException {
+    	
+    	int i = Paivamaara.getPaivamaaraNro(treeni);
+        alkiot[i] = null;
+        lkm--;
     }
     
     
@@ -58,7 +70,7 @@ public class Paivamaarat {
     /*
      * Nollataan tiedot k‰ytt‰j‰‰ vaihdettaessa
      */
-    public void nollaa() {
+    public static void nollaa() {
     	Arrays.fill(alkiot, null);
     	lkm = 0;
     }
@@ -66,7 +78,7 @@ public class Paivamaarat {
     /*
      * Luetaan tiedostosta treenit ja muutetaan ne atribuuteille
      */
-	public void lueTiedostosta(String nimi) throws SailoException, FileNotFoundException{
+	public static void lueTiedostosta(String nimi) throws SailoException, FileNotFoundException{
 		
 		nollaa();
 		
@@ -92,7 +104,7 @@ public class Paivamaarat {
 	/*
 	 * M‰‰ritet‰‰n tiedoston nimi johon tieto tallennetaan
 	 */
-	public void setTiedostonPerusNimi(String nimi) throws FileNotFoundException {
+	public static void setTiedostonPerusNimi(String nimi) throws FileNotFoundException {
 		tiedostonPerusNimi = nimi;
 	}
 	
@@ -100,7 +112,7 @@ public class Paivamaarat {
 	/*
 	 * Tiedoston nimi p‰‰tteineen
 	 */
-    public String getTiedostonNimi() {
+    public static String getTiedostonNimi() {
         return getTiedostonPerusNimi() + ".dat";
     }
     
@@ -108,7 +120,7 @@ public class Paivamaarat {
     /*
      * tiedoston nimi johon tieto tallennetaan
      */
-    public String getTiedostonPerusNimi() {
+    public static String getTiedostonPerusNimi() {
         return tiedostonPerusNimi;
     }
 
@@ -141,7 +153,8 @@ public class Paivamaarat {
      * Testiohjelma jsenistlle
      * @param args ei kytss
      */
-    public static void main(String args[]) {
+    @SuppressWarnings("static-access")
+	public static void main(String args[]) {
     	Paivamaarat paivamaarat = new Paivamaarat();
     	
     	Paivamaara ensimmainen = new Paivamaara(); Paivamaara toinen = new Paivamaara();

@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 /**
  * Treenikirjan treenien tyypit
  *
@@ -17,18 +18,19 @@ import java.util.Collection;
  * @version 25.03.2022
  * @version 05.04.2022 - Listakorjaus
  * @version 21.4.2022 - HT6 uusi
+ * @version 29.4.2022 - HT7
  */
 public class Tyypit {
 
-	private final Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
+	public final static Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
 	
-	private String tiedostonPerusNimi = "";
+	private static String tiedostonPerusNimi = "";
 
 	
 	/*
 	 * alustetaan jokainen treeni
 	 */
-	public void alusta() {
+	public static void alusta() {
 
 		Tyyppi lenkki = new Tyyppi();
 		Tyyppi sali = new Tyyppi();
@@ -62,7 +64,7 @@ public class Tyypit {
 	/*
 	 * lis‰t‰‰n treenin tyyppi tietokantaan
 	 */
-    public void lisaa(Tyyppi tyyppi) {
+    public static void lisaa(Tyyppi tyyppi) {
         alkiot.add(tyyppi);
     }
 
@@ -83,7 +85,10 @@ public class Tyypit {
     }
     
     
-	public void setTiedostonPerusNimi(String nimi) {
+    /*
+     * M‰‰ritet‰‰n tiedoston nimi johon tieto tallennetaan
+     */
+	public static void setTiedostonPerusNimi(String nimi) {
 		tiedostonPerusNimi = nimi;
 	}
     
@@ -91,7 +96,7 @@ public class Tyypit {
 	/*
 	 * Tiedoston nimi p‰‰tteineen
 	 */
-    public String getTiedostonNimi() {
+    public static String getTiedostonNimi() {
         return getTiedostonPerusNimi() + ".dat";
     }
     
@@ -99,7 +104,7 @@ public class Tyypit {
     /*
      * tiedoston nimi johon tieto tallennetaan
      */
-    public String getTiedostonPerusNimi() {
+    public static String getTiedostonPerusNimi() {
         return tiedostonPerusNimi;
     }
     
@@ -107,11 +112,24 @@ public class Tyypit {
     /*
      * Luetaan tiedostosta tyypit
      */
-	public void lueTiedostosta(String nimi) throws IOException {
+	public static void lueTiedostosta(String nimi) throws IOException, SailoException {
+		
+		File file = new File(getTiedostonNimi());
+		if (file.exists() == false) {
+			PrintWriter fo = new PrintWriter(new FileWriter(file.getCanonicalPath()));
+			fo.println("");
+        }
+		
 		
         BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi()));
         String rivi = null;
-        	
+        
+        if (fi.readLine() == null) {
+        	alusta();
+        	tallenna();
+        }
+           
+        
         while ( (rivi = fi.readLine()) != null ) {
         	rivi = rivi.trim();
         	Tyyppi tyyppi = new Tyyppi();
@@ -125,11 +143,7 @@ public class Tyypit {
     /*
      * Tallennetaan tyyppien tiedot
      */
-	public void tallenna() throws SailoException {
-        
-		if (alkiot.isEmpty()) {
-			alusta();
-		}
+	public static void tallenna() throws SailoException {
 		
         File ftied = new File(getTiedostonNimi());
 
@@ -156,7 +170,8 @@ public class Tyypit {
      * Testiohjelma harrastuksille
      * @param args ei k‰ytˆss‰
      */
-    public static void main(String args[]) {
+    @SuppressWarnings("static-access")
+	public static void main(String args[]) {
     	
     	Tyypit tyypit = new Tyypit();
     	Tyyppi lenkki = new Tyyppi();
@@ -194,6 +209,7 @@ public class Tyypit {
         }
     	
     }
+    
 	
 }
 
