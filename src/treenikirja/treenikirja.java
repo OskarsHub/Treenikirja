@@ -17,8 +17,8 @@ import java.io.IOException;
 
 	public class treenikirja {
 			
-		private static Tyypit tyypit = new Tyypit();
-		private static Paivamaarat paivamaarat = new Paivamaarat();
+		private Tyypit tyypit = new Tyypit();
+		private Paivamaarat paivamaarat = new Paivamaarat();
 			
 		
 		/*
@@ -39,21 +39,21 @@ import java.io.IOException;
 		 */
 		public void lueTiedosto(String nimi) throws SailoException, IOException {
 			setTiedosto(nimi);
-			Tyypit.lueTiedostosta(nimi);
-			Paivamaarat.lueTiedostosta(nimi);
+			tyypit.lueTiedostosta(nimi);
+			paivamaarat.lueTiedostosta(nimi);
 		}
 		
 		
 		/*
 		 * Tiedoston teko
 		 */
-		private static void setTiedosto(String nimi) throws FileNotFoundException {
+		private void setTiedosto(String nimi) throws FileNotFoundException {
 			File dir = new File(nimi);
 			dir.mkdirs();
 			String hakemistonNimi = "";
 			if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
-			Paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
-			Tyypit.setTiedostonPerusNimi(hakemistonNimi + "tyypit");
+			paivamaarat.setTiedostonPerusNimi(hakemistonNimi + "paivamaarat");
+			tyypit.setTiedostonPerusNimi(hakemistonNimi + "tyypit");
 		}
 
 
@@ -69,7 +69,6 @@ import java.io.IOException;
 		 * Palauttaa treenikirjan p‰iv‰m‰‰rien m‰‰r‰n
 		 * @return p‰iv‰m‰‰rien m‰‰r‰n
 		 */
-		@SuppressWarnings("static-access")
 		public int getPaivamaarat() {
 			return paivamaarat.getLkm();  
 		}
@@ -87,8 +86,7 @@ import java.io.IOException;
 		/*
 		 * Lis‰‰ uuden p‰iv‰m‰‰r‰n
 		 */
-		@SuppressWarnings("static-access")
-		public void lisaa(Paivamaara paivamaara) throws SailoException {
+		public void lisaa(Paivamaara paivamaara) {
 			paivamaarat.lisaa(paivamaara);
 		}
 		    
@@ -100,7 +98,11 @@ import java.io.IOException;
 		public Paivamaara annaPaivamaara(int i) throws IndexOutOfBoundsException {
 		    return paivamaarat.anna(i);
 		}
-
+		
+		
+		public void poista(Paivamaara paivamaaranKohdalla){
+			paivamaarat.poista(paivamaaranKohdalla);
+		}
 		
 		
 	    /**
@@ -108,8 +110,6 @@ import java.io.IOException;
 	     * @param args ei kytss
 	     */
 		public static void main(String args[]) {
-
-		    try {
 		        	
 		    	treenikirja treenikirja = new treenikirja();
 		        	
@@ -126,14 +126,11 @@ import java.io.IOException;
 		            System.out.println("Pivmr paikassa: " + i);
 		            maara.tulosta(System.out);
 		        }
-		        
-
-		    } catch (SailoException ex) {
-		        System.out.println(ex.getMessage());
-		    }
 		    
 		    
     }
-		
+
+
 
 }
+		

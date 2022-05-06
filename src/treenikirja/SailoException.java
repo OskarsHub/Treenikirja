@@ -1,10 +1,13 @@
 package treenikirja;
 
 public class SailoException extends Exception {
-    private static final long serialVersionUID = 1L;
+	
+	public SailoException(String string) {
+		// TODO Auto-generated constructor stub
+	}
 
-    public SailoException(String viesti) {
-        super(viesti);
-    }
+	private static final long serialVersionUID = 1L;
 
+	
+	
 }

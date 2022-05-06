@@ -1,10 +1,8 @@
 package fxTreenikirja;
 
-import java.awt.Frame;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.css.Style;
 import javafx.stage.Stage;
 import treenikirja.treenikirja;
 import javafx.scene.Scene;

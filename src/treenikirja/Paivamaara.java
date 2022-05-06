@@ -28,7 +28,7 @@ public class Paivamaara {
 	public String      matka;
 	public String      askeleet;
 	public String      syke;
-	
+	public static int sPaivamaara;
 	/*
 	 * Apumetodi, jolla saadaan luotua testiarvot
 	 */
@@ -45,7 +45,8 @@ public class Paivamaara {
 		askeleet  = null;
 		syke      = null;
 		
-        paivamaaraNro = Paivamaarat.getLkm();
+        paivamaaraNro = sPaivamaara;
+        sPaivamaara++;
     }
     
     
@@ -122,7 +123,7 @@ public class Paivamaara {
     /*
      * Palauttaa valitun p‰iv‰m‰‰r‰n numeron
      */
-	public static int getPaivamaaraNro(Paivamaara paivamaara) {
+	public int getPaivamaaraNro(Paivamaara paivamaara) {
 		int nro = paivamaara.paivamaaraNro;
 		return nro;
 	}

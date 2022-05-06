@@ -18,8 +18,8 @@ import fi.jyu.mit.ohj2.Mjonot;
  */
 public class Tyyppi {
 	
-	protected int id;
-	protected String tyyppi;
+	public int id;
+	public String tyyppi;
 	public boolean kestoH;
 	public boolean kestoMin;
 	public boolean kalorit;

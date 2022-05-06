@@ -22,15 +22,15 @@ import java.util.Collection;
  */
 public class Tyypit {
 
-	public final static Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
+	public final Collection<Tyyppi> alkiot = new ArrayList<Tyyppi>();
 	
-	private static String tiedostonPerusNimi = "";
+	private String tiedostonPerusNimi = "";
 
 	
 	/*
 	 * alustetaan jokainen treeni
 	 */
-	public static void alusta() {
+	public void alusta() {
 
 		Tyyppi lenkki = new Tyyppi();
 		Tyyppi sali = new Tyyppi();
@@ -64,7 +64,7 @@ public class Tyypit {
 	/*
 	 * lis‰t‰‰n treenin tyyppi tietokantaan
 	 */
-    public static void lisaa(Tyyppi tyyppi) {
+    public void lisaa(Tyyppi tyyppi) {
         alkiot.add(tyyppi);
     }
 
@@ -88,7 +88,7 @@ public class Tyypit {
     /*
      * M‰‰ritet‰‰n tiedoston nimi johon tieto tallennetaan
      */
-	public static void setTiedostonPerusNimi(String nimi) {
+	public void setTiedostonPerusNimi(String nimi) {
 		tiedostonPerusNimi = nimi;
 	}
     
@@ -96,7 +96,7 @@ public class Tyypit {
 	/*
 	 * Tiedoston nimi p‰‰tteineen
 	 */
-    public static String getTiedostonNimi() {
+    public String getTiedostonNimi() {
         return getTiedostonPerusNimi() + ".dat";
     }
     
@@ -104,7 +104,7 @@ public class Tyypit {
     /*
      * tiedoston nimi johon tieto tallennetaan
      */
-    public static String getTiedostonPerusNimi() {
+    public String getTiedostonPerusNimi() {
         return tiedostonPerusNimi;
     }
     
@@ -112,7 +112,7 @@ public class Tyypit {
     /*
      * Luetaan tiedostosta tyypit
      */
-	public static void lueTiedostosta(String nimi) throws IOException, SailoException {
+	public void lueTiedostosta(String nimi) throws IOException, SailoException {
 		
 		File file = new File(getTiedostonNimi());
 		if (file.exists() == false) {
@@ -143,7 +143,7 @@ public class Tyypit {
     /*
      * Tallennetaan tyyppien tiedot
      */
-	public static void tallenna() throws SailoException {
+	public void tallenna() throws SailoException {
 		
         File ftied = new File(getTiedostonNimi());
 
@@ -170,7 +170,6 @@ public class Tyypit {
      * Testiohjelma harrastuksille
      * @param args ei k‰ytˆss‰
      */
-    @SuppressWarnings("static-access")
 	public static void main(String args[]) {
     	
     	Tyypit tyypit = new Tyypit();

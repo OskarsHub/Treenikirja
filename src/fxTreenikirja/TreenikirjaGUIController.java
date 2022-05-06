@@ -14,9 +14,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import treenikirja.Paivamaara;
-import treenikirja.Paivamaarat;
 import treenikirja.treenikirja;
 import treenikirja.SailoException;
 
@@ -28,17 +28,52 @@ import treenikirja.SailoException;
  * @version 7.4.2022 - HT6
  * @version 21.4.2022 - HT6 uusi
  * @version 29.4.2022 - HT7
+ * @version 6.5.4.2022 - HT7 lisätty oikeellisuustarkistus
  */
 public class TreenikirjaGUIController {
 	
 	treenikirja treenikirja = new treenikirja();
+	private boolean oikeinA = true;
+	private boolean oikeinKa = true;
+	private boolean oikeinKeH = true;
+	private boolean oikeinKeMin = true;
+	private boolean oikeinM = true;
+	private boolean oikeinS = true;
 	
 	
     @FXML
     private TextField askeleet;
     
     @FXML
+    void handleAskeleet(KeyEvent event) {
+    	oikeinA = tarkista(askeleet.getText());
+    	
+    	if (oikeinA == false) {
+    		askeleet.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinA == true) {
+    		askeleet.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
+
+	@FXML
     private TextField kalorit;
+    
+    @FXML
+    void handleKalorit(KeyEvent event) {
+    	oikeinKa = tarkista(kalorit.getText());
+    	
+    	if (oikeinKa == false) {
+    		kalorit.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinKa == true) {
+    		kalorit.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
     
     @FXML
     private Text kcalText;
@@ -47,22 +82,80 @@ public class TreenikirjaGUIController {
     private TextField kestoH;
     
     @FXML
+    void handleKestoH(KeyEvent event) {
+    	oikeinKeH = tarkista(kestoH.getText());
+    	
+    	if (oikeinKeH == false) {
+    		kestoH.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinKeH == true) {
+    		kestoH.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
+    
+    @FXML
     private Text hText;
 
     @FXML
     private TextField kestoMin;
+    
 
     @FXML
+    void handleKestoMin(KeyEvent event) {
+    	oikeinKeMin = tarkista(kestoMin.getText());
+    	
+    	if (oikeinKeMin == false) {
+    		kestoMin.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinKeMin == true) {
+    		kestoMin.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
+
+
+	@FXML
     private Text minText;
 
     @FXML
     private TextField matka;
     
     @FXML
+    void handleMatka(KeyEvent event) {
+    	oikeinM = tarkista(matka.getText());
+    	
+    	if (oikeinM == false) {
+    		matka.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinM == true) {
+    		matka.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
+    
+    @FXML
     private Text kmText;
 
     @FXML
     private TextField syke;
+    
+    @FXML
+    void handleSyke(KeyEvent event) {
+    	oikeinS = tarkista(syke.getText());
+    	
+    	if (oikeinS == false) {
+    		syke.setStyle("-fx-text-inner-color: red;");
+    	}
+    	
+    	if (oikeinS == true) {
+    		syke.setStyle("-fx-text-inner-color: black;");
+    	}
+    	
+    }
     
     @FXML
     private Text bpmText;
@@ -84,11 +177,25 @@ public class TreenikirjaGUIController {
     
     @FXML
     void uusiTreeniButton(ActionEvent event) {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	uusiTreeni();
     }
     
     @FXML
     void handleAvaa(ActionEvent event) throws SailoException, IOException {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	avaa();
     }
 
@@ -99,23 +206,51 @@ public class TreenikirjaGUIController {
 
     @FXML
     void handlePoistaTreeni(ActionEvent event) throws SailoException {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	poistaTreeni();
     }
 
 	@FXML
     void handleTallenna(ActionEvent event) throws SailoException {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	tallenna();
     	Dialogs.showMessageDialog("Tallennettu");
     }
 	
     @FXML
     void handleAlaTallenna(ActionEvent event) throws SailoException {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	tallenna();
     	Dialogs.showMessageDialog("Tallennettu");
     }
 
     @FXML
     void handleUusiTreeni(ActionEvent event) {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	uusiTreeni();
     }
     
@@ -126,9 +261,15 @@ public class TreenikirjaGUIController {
     
     @FXML
     void handleHakuTreenit(ActionEvent event) {
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
+    	
     	hae(hakuehto.getValue());
     }
-
     
 
 	///-----------------------------------------
@@ -148,9 +289,23 @@ public class TreenikirjaGUIController {
     	paivamaaraLista.clear();
     	paivamaaraLista.addSelectionListener(e -> naytaJasen());
     }
+	
 
-    
     /*
+     * Tarkistetaan sisältääkö kirjoitettu teksti kirjaimia
+     * @return true tai false sen mukaan onko tekstissä kirjaimia
+     */
+    private boolean tarkista(String text) {
+    	
+    	if (text.matches(".*[a-ö].*")) {
+    		return false;
+    	}
+    	
+		return true;
+	}
+    
+    
+	/*
      * Valitun päivämäärän näyttämistä varten
      */  
     private Paivamaara paivamaaranKohdalla;
@@ -162,12 +317,8 @@ public class TreenikirjaGUIController {
 	private void uusiTreeni() {
     	Paivamaara uusi = new Paivamaara();
     	uusi.luoTreeni();
-    	try {
-			treenikirja.lisaa(uusi);
-		} catch (SailoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		treenikirja.lisaa(uusi);
+
     	lisaa(uusi.getPaivamaaranNro());
 	}
 	
@@ -175,8 +326,8 @@ public class TreenikirjaGUIController {
 	/*
 	 * Poistetaan valittu treeni
 	 */
-    private void poistaTreeni() throws SailoException {
-    	Paivamaarat.poista(paivamaaranKohdalla);
+    private void poistaTreeni(){
+    	treenikirja.poista(paivamaaranKohdalla);
     	lisaa();
 	}
     
@@ -337,6 +488,13 @@ public class TreenikirjaGUIController {
 	 * Valitun päivämäärän tiedot
 	 */
     protected void naytaJasen() {
+    	
+    	
+    	if (oikeinA == false     || oikeinKa == false || oikeinKeH == false ||
+    		oikeinKeMin == false || oikeinM == false  || oikeinS == false)   {
+    		Dialogs.showMessageDialog("Korjaa virhe");
+    		return;
+    	}
     	
     	if (paivamaaranKohdalla != null) {
     		setUudet();

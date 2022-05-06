@@ -24,15 +24,15 @@ import java.util.Arrays;
 public class Paivamaarat {
 	
 	
-	public static Paivamaara alkiot[] = new Paivamaara[10];
-	private static int lkm = 0;
-	private static String tiedostonPerusNimi = "";
+	public Paivamaara alkiot[] = new Paivamaara[10];
+	private int lkm = 0;
+	private String tiedostonPerusNimi = "";
 	
 	
 	/*
 	 * Lis‰‰ uuden p‰iv‰m‰‰r‰n tietorakenteeseen
 	 */
-    public static void lisaa(Paivamaara treeni) throws SailoException {
+    public void lisaa(Paivamaara treeni) {
         if (lkm >= alkiot.length) {
         	alkiot = Arrays.copyOf(alkiot, alkiot.length+10);
         }
@@ -43,9 +43,9 @@ public class Paivamaarat {
     /*
      * Poistaa treenin alkioista
      */
-    public static void poista(Paivamaara treeni) throws SailoException {
+    public void poista(Paivamaara treeni) {
     	
-    	int i = Paivamaara.getPaivamaaraNro(treeni);
+    	int i = treeni.getPaivamaaraNro(treeni);
         alkiot[i] = null;
         lkm--;
     }
@@ -62,7 +62,7 @@ public class Paivamaarat {
     /*
      * Palauttaa kuinka monta p‰iv‰m‰‰r‰‰ on
      */
-    public static int getLkm() {
+    public int getLkm() {
         return lkm;
     }
 
@@ -70,7 +70,7 @@ public class Paivamaarat {
     /*
      * Nollataan tiedot k‰ytt‰j‰‰ vaihdettaessa
      */
-    public static void nollaa() {
+    public void nollaa() {
     	Arrays.fill(alkiot, null);
     	lkm = 0;
     }
@@ -78,7 +78,7 @@ public class Paivamaarat {
     /*
      * Luetaan tiedostosta treenit ja muutetaan ne atribuuteille
      */
-	public static void lueTiedostosta(String nimi) throws SailoException, FileNotFoundException{
+	public void lueTiedostosta(String nimi) throws SailoException, FileNotFoundException{
 		
 		nollaa();
 		
@@ -104,7 +104,7 @@ public class Paivamaarat {
 	/*
 	 * M‰‰ritet‰‰n tiedoston nimi johon tieto tallennetaan
 	 */
-	public static void setTiedostonPerusNimi(String nimi) throws FileNotFoundException {
+	public void setTiedostonPerusNimi(String nimi) throws FileNotFoundException {
 		tiedostonPerusNimi = nimi;
 	}
 	
@@ -112,7 +112,7 @@ public class Paivamaarat {
 	/*
 	 * Tiedoston nimi p‰‰tteineen
 	 */
-    public static String getTiedostonNimi() {
+    public String getTiedostonNimi() {
         return getTiedostonPerusNimi() + ".dat";
     }
     
@@ -120,7 +120,7 @@ public class Paivamaarat {
     /*
      * tiedoston nimi johon tieto tallennetaan
      */
-    public static String getTiedostonPerusNimi() {
+    public String getTiedostonPerusNimi() {
         return tiedostonPerusNimi;
     }
 
@@ -153,7 +153,6 @@ public class Paivamaarat {
      * Testiohjelma jsenistlle
      * @param args ei kytss
      */
-    @SuppressWarnings("static-access")
 	public static void main(String args[]) {
     	Paivamaarat paivamaarat = new Paivamaarat();
     	
@@ -164,29 +163,20 @@ public class Paivamaarat {
     	kolmas.luoTreeni();
     	neljas.luoTreeni();
     	
- 
-		try {
-			paivamaarat.lisaa(ensimmainen);
-			paivamaarat.lisaa(toinen);
-			paivamaarat.lisaa(kolmas);
-			paivamaarat.lisaa(neljas);
+		paivamaarat.lisaa(ensimmainen);
+		paivamaarat.lisaa(toinen);
+		paivamaarat.lisaa(kolmas);
+		paivamaarat.lisaa(neljas);
 			
-            for (int i = 0; i < paivamaarat.getLkm(); i++) {
+           for (int i = 0; i < paivamaarat.getLkm(); i++) {
                 Paivamaara jasen = paivamaarat.anna(i);
                 System.out.println("Treeni nro: " + i);
                 jasen.tulosta(System.out);
                 System.out.println("");
             }
             
-        
-		} catch (SailoException e) {
-			e.printStackTrace();
-		}
-		
- 	
+      
     }
 
     
-
-	
 }
