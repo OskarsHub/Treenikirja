@@ -1,6 +1,4 @@
-# pohja
+# Treenikirja
 
-Pohja kevään 2022 harjoitustöiden GIT-repoille
-
-Lue käyttöohjeet TIMistä: <https://tim.jyu.fi/view/kurssit/tie/ohj2/tyokalut/git/ohj2git#fork>
-
+Treenikirja on 2022-keväällä suoritetun ohjelmointi 2 kurssin harjoitustyö,
+jossa käytetään kahta (Treeni ja Päivämäärä) tietokantaa treenitietojen tallentamiseen
